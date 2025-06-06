@@ -1,4 +1,4 @@
-#Winc_backend_Final_Project 
+# BED Final Project Starter
 
 This repository contains starter code for the Bookings project.
 

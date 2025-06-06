@@ -1,9 +1,17 @@
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
-//get all users except password
-const getUsers = async (req, res) => {
-    const user = await prisma.user.findMany({
+
+//get all users except password(query params) 
+const getUsers = async ({ username, email } = {}) => {
+
+    const filters = {};
+
+    if(username) filters.username = username;
+    if(email) filters.email = email;
+
+    const users = await prisma.user.findMany({
+        where: filters,
         select: {
             id: true,
             username: true,
@@ -13,8 +21,8 @@ const getUsers = async (req, res) => {
             pictureUrl: true,
         }
     });
-    console.log(user);
-    return user;
+    return users;
 }
+
 
 export default getUsers;
