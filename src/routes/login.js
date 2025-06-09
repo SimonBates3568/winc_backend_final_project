@@ -5,9 +5,16 @@ import jwt from "jsonwebtoken";
 const router = Router();
 
 router.post("/", (req, res) => {
+  console.log("BODY:", req.body); // <--- Add this line
   const secretKey = process.env.AUTH_SECRET_KEY || "my-secret-key";
   const { username, password } = req.body;
   const { users } = userData;
+
+  console.log("Received:", username, password);
+  console.log(
+    "Users:",
+    users.map((u) => ({ username: u.username, password: u.password }))
+  );
 
   const user = users.find(
     (u) => u.username === username && u.password === password

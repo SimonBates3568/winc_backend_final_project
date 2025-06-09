@@ -11,6 +11,7 @@ import loginRouter from "./routes/login.js";
 import log from "./middleware/logMiddleware.js";
 import errorHandler from "./middleware/errorHandler.js";
 
+
 const app = express();
 
 // Sentry
@@ -54,7 +55,7 @@ app.use("/login", loginRouter);
 app.use(Sentry.Handlers.errorHandler());
 
 // Error handling
-// app.use(errorHandler);
+app.use(errorHandler);
 
 app.listen(4000, () => {
   console.log("Server is listening on port 4000");
