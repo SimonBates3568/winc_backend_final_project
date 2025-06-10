@@ -4,6 +4,7 @@ import createHost from "../services/hosts/createHost.js";
 import getHostById from "../services/hosts/getHostById.js";
 import updateHostById from "../services/hosts/updateHostById.js";
 import deleteHostById from "../services/hosts/deleteHostById.js";
+import authMiddleware from "../middleware/errorHandler.js";
 
 const router = Router();
 
@@ -17,8 +18,8 @@ router.get("/", async (req, res) => {
     }
 });
 
-// POST /hosts => create a new host(JWT TOKEN AUTHENTICATION REQUIRED!)
-router.post("/", async (req, res) => {
+// POST /hosts => create a new host(JWT TOKEN AUTHENTICATION)
+router.post("/",  authMiddleware, async (req, res) => {
     try {
         console.log("REQ BODY:", req.body); 
         // Destructure all required fields from req.body
@@ -45,8 +46,8 @@ router.get("/:id", async (req, res) => {
     }
 });
 
-// PUT /hosts/:id => update host by id (JWT TOKEN AUTHENTICATION REQUIRED!)
-router.put("/:id",  async (req, res) => {
+// PUT /hosts/:id => update host by id (JWT TOKEN AUTHENTICATION)
+router.put("/:id",  authMiddleware, async (req, res) => {
     try {
         const { id } = req.params;
         const { username, password, name, email, phoneNumber, pictureUrl } = req.body;
@@ -64,8 +65,8 @@ router.put("/:id",  async (req, res) => {
     }
 });
 
-// DELETE /hosts/:id => delete host by id (JWT TOKEN AUTHENTICATION REQUIRED!)
-router.delete("/:id",  async (req, res) => {
+// DELETE /hosts/:id => delete host by id (JWT TOKEN AUTHENTICATION)
+router.delete("/:id",  authMiddleware, async (req, res) => {
     try {
   
         const { id } = req.params;
