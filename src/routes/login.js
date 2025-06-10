@@ -5,17 +5,16 @@ import jwt from "jsonwebtoken";
 const router = Router();
 
 router.post("/", (req, res) => {
-  console.log("BODY:", req.body); // <--- Add this line
   const secretKey = process.env.AUTH_SECRET_KEY || "my-secret-key";
   const { username, password } = req.body;
   const { users } = userData;
 
-  console.log("Received:", username, password);
-  console.log(
-    "Users:",
-    users.map((u) => ({ username: u.username, password: u.password }))
-  );
+  // Validate that username and password are provided
+  if (!username || !password) {
+    return res.status(400).json({ message: "Username and password are required." });
+  }
 
+  // Find user with matching credentials
   const user = users.find(
     (u) => u.username === username && u.password === password
   );
@@ -24,6 +23,7 @@ router.post("/", (req, res) => {
     return res.status(401).json({ message: "Invalid credentials!" });
   }
 
+  // Generate JWT token
   const token = jwt.sign({ userId: user.id }, secretKey);
 
   res.status(200).json({ message: "Successfully logged in!", token });

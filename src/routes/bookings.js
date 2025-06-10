@@ -8,7 +8,7 @@ import authMiddleware from "../middleware/errorHandler.js";
 
 const router = Router();
 
-// GET /bookings
+// GET /bookings => parameters: userId (optional)
 router.get("/", async (req, res) => {
   try {
     const { userId } = req.query;

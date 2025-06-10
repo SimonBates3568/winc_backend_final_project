@@ -6,6 +6,7 @@ import updateUserById from "../services/users/updateUserById.js";
 import deleteUserById from "../services/users/deleteUserById.js";
 import authMiddleware from "../middleware/errorHandler.js";
 
+
 const router = Router();
 
 // GET /users => Get all users with optional query parameters for filtering and no password
