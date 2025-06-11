@@ -1,4 +1,4 @@
-# BED Final Project Starter
+# BED Final Project 
 
 This repository contains starter code for the Bookings project.
 
