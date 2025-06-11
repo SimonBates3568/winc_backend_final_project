@@ -11,7 +11,7 @@ const router = Router();
 // GET /bookings => parameters: userId (optional)
 router.get("/", async (req, res) => {
   try {
-    const { userId } = req.query;
+    const { userId } = req.query;// query parameters
     const bookings = await getBookings({ userId });
     res.status(200).json(bookings);
   } catch (error) {

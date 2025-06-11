@@ -14,6 +14,7 @@ const getHosts = async () => {
             aboutMe: true,
         }
     })
+    console.log("Fetching all hosts from the database", hosts);
     return hosts;
 };
 

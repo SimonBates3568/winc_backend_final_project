@@ -21,7 +21,7 @@ const getBookings = async ({ userId } = {}) => {
             bookingStatus: true
         }
     });
-    console.log(bookings);
+    console.log("Fetching all bookings from the database", bookings);
     return bookings;
 }
 
