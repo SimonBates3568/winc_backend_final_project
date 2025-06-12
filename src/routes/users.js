@@ -9,7 +9,8 @@ import authMiddleware from "../middleware/errorHandler.js";
 
 const router = Router();
 
-// GET /users => Get all users with optional query parameters for filtering and no password
+// User => GET => /users => Returns all users and their information, except password
+// TODO: Add Sentry monitoring to this route if needed
 router.get("/", async (req, res) => {
     try {
         const { username, email } = req.query;
@@ -20,7 +21,8 @@ router.get("/", async (req, res) => {
     }
 });
 
-// POST /users
+// User => POST => /user => Creates a new user 
+// TODO: Add Sentry monitoring to this route if needed
 router.post("/", authMiddleware, async (req, res) => {
     try {
         const { username, password, name, email, phoneNumber, pictureUrl } = req.body;
@@ -35,7 +37,8 @@ router.post("/", authMiddleware, async (req, res) => {
     }
 });
 
-// GET /users/:id
+// User => GET => /user/:id => Returns a single user.
+// TODO: Add Sentry monitoring to this route if needed
 router.get("/:id", async (req, res) => {
     try {
         const { id } = req.params;
@@ -49,7 +52,8 @@ router.get("/:id", async (req, res) => {
     }
 });
 
-// PUT /users/:id
+// User => PUT =>  /user/:id => Updates a user by ID (JWT TOKEN AUTHENTICATION)
+// TODO: Add Sentry monitoring to this route if needed
 router.put("/:id", authMiddleware, async (req, res) => {
     try {
         const { id } = req.params;
@@ -68,7 +72,8 @@ router.put("/:id", authMiddleware, async (req, res) => {
     }
 });
 
-// DELETE /users/:id
+// User => DELETE => /user/:id => Deletes a user by ID (JWT TOKEN AUTHENTICATION)
+// TODO: Add Sentry monitoring to this route if needed
 router.delete("/:id", authMiddleware, async (req, res) => {
     try {
         const { id } = req.params;

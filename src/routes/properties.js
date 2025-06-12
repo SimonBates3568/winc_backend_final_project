@@ -8,8 +8,8 @@ import authMiddleware from "../middleware/errorHandler.js";
 
 
 const router = Router();
-//  query params => /properties?location=Malibu, California&pricePerNight=310.25&amenities=Wifi
-// GET /properties => returns all properties
+// Properties => GET => /properties => Returns all properties (query parameters: location, pricePerNight, amenities)
+// TODO: Add Sentry monitoring to this route if needed
 router.get("/", async (req, res) => {
   try {
     const { location, pricePerNight, amenities } = req.query;//query parameters
@@ -21,8 +21,8 @@ router.get("/", async (req, res) => {
   }
 });
 
-
-//POST /properties => create a new property (JWT TOKEN AUTHENTICATION)
+// Properties => POST => /properties => Creates a new property (JWT TOKEN AUTHENTICATION)
+// TODO: Add Sentry monitoring to this route if needed
 router.post("/", authMiddleware,async (req, res) => {
   try {
     const { hostId, title, description, location, pricePerNight, bedroomCount, bathRoomCount, maxGuestCount, rating, host } = req.body;
@@ -37,7 +37,8 @@ router.post("/", authMiddleware,async (req, res) => {
   }
 });
 
-//GET /properties/:id => get property by id
+// Properties => GET => /properties/:id => Returns a single property by ID
+// TODO: Add Sentry monitoring to this route if needed
 router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -51,7 +52,8 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-//PUT /properties/:id => update property by id(JWT TOKEN AUTHENTICATION)
+// Properties => PUT => /properties/:id => Updates a property by ID (JWT TOKEN AUTHENTICATION)
+// TODO: Add Sentry monitoring to this route if needed
 router.put("/:id", authMiddleware, async (req, res) => {
   try {
     const { id } = req.params;
@@ -89,8 +91,8 @@ router.put("/:id", authMiddleware, async (req, res) => {
     }
   }
 });
-
-//DELETE /properties/:id => delete property by id(JWT TOKEN AUTHENTICATION)
+// Properties => DELETE => /properties/:id => Deletes a property by ID (JWT TOKEN AUTHENTICATION)
+// TODO: Add Sentry monitoring to this route if needed
 router.delete("/:id", authMiddleware, async (req, res) => {
   try {
     const { id } = req.params;

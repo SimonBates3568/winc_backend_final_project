@@ -5,25 +5,30 @@ import getAmenityById from "../services/amenities/getAmenityById.js";
 import updateAmenityById from "../services/amenities/updateAmenityById.js";
 import deleteAmenityById from "../services/amenities/deleteAmenityById.js";
 import authMiddleware from "../middleware/errorHandler.js";
+import * as Sentry from "@sentry/node";
 const router = Router();
 
-//GET /amenities => returns all amenities
+// Amenities => GET => /amenities => Returns all amenities
+// TODO: Add Sentry monitoring to this route if needed
 router.get("/", async (_, res) => {
-    try {
-        const amenities = await getAmenities();
-        res.status(200).json(amenities);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
+  try {
+    const amenities = await getAmenities();
+    res.status(200).json(amenities);
+  } catch (error) {
+    Sentry.captureException(error);
+    res.status(500).json({ error: error.message });
+  }
 });
 
-// POST /amenities => create a new amenity(JWT TOKEN AUTHENTICATION)
+// Amenities => POST => /amenities => Creates a new amenity (JWT TOKEN AUTHENTICATION)
+// TODO: Add Sentry monitoring to this route if needed
 router.post("/", authMiddleware, async (req, res) => {
   try {
     const { name } = req.body;
     const newAmenity = await createAmenity(name);
     res.status(201).json(newAmenity);
   } catch (error) {
+    Sentry.captureException(error);
     if (error.name === "UnauthorizedError") {
       res.status(401).json({ error: "Unauthorized" });
     } else {
@@ -32,8 +37,9 @@ router.post("/", authMiddleware, async (req, res) => {
   }
 });
 
-// GET /amenities/:id => get amenity by id
-router.get("/:id",  async (req, res) => {
+// GET /amenities/:id => returns a single amenity by ID
+// TODO: Add Sentry monitoring to this route if needed
+router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const amenity = await getAmenityById(id);
@@ -42,11 +48,13 @@ router.get("/:id",  async (req, res) => {
     }
     res.status(200).json(amenity);
   } catch (error) {
+    Sentry.captureException(error);
     res.status(500).json({ error: "Failed to retrieve amenity" });
   }
 });
 
-// PUT /amenities/:id => update amenity by id(JWT TOKEN AUTHENTICATION)
+// PUT /amenities/:id => updates an amenity by ID (JWT TOKEN AUTHENTICATION)
+// TODO: Add Sentry monitoring to this route if needed
 router.put("/:id", authMiddleware, async (req, res) => {
   try {
     const { id } = req.params;
@@ -57,6 +65,7 @@ router.put("/:id", authMiddleware, async (req, res) => {
     }
     res.status(200).json(updatedAmenityById);
   } catch (error) {
+    Sentry.captureException(error);
     if (error.name === "UnauthorizedError") {
       res.status(401).json({ error: "Unauthorized" });
     } else {
@@ -65,22 +74,24 @@ router.put("/:id", authMiddleware, async (req, res) => {
   }
 });
 
-// DELETE /amenities/:id => delete amenity by id(JWT TOKEN AUTHENTICATION)
+// Amenities => DELETE => /amenities/:id => Deletes an amenity by ID (JWT TOKEN AUTHENTICATION)
+// TODO: Add Sentry monitoring to this route if needed
 router.delete("/:id", authMiddleware, async (req, res) => {
-    try {
-        const { id } = req.params;
-        const amenity = await deleteAmenityById(id);
-        if (!amenity) {
-            return res.status(404).json({ error: "Amenity not found" });
-        }
-        res.status(200).json({ message: "Amenity deleted successfully", amenity });
-    } catch (error) {
-        if (error.name === "UnauthorizedError") {
-            res.status(401).json({ error: "Unauthorized" });
-        } else {
-            res.status(400).json({ error: error.message });
-        }
+  try {
+    const { id } = req.params;
+    const amenity = await deleteAmenityById(id);
+    if (!amenity) {
+      return res.status(404).json({ error: "Amenity not found" });
     }
+    res.status(200).json({ message: "Amenity deleted successfully", amenity });
+  } catch (error) {
+    Sentry.captureException(error);
+    if (error.name === "UnauthorizedError") {
+      res.status(401).json({ error: "Unauthorized" });
+    } else {
+      res.status(400).json({ error: error.message });
+    }
+  }
 });
 
 export default router;

@@ -47,6 +47,11 @@ app.use("/reviews", reviewsRouter);
 app.use("/hosts", hostsRouter);
 app.use("/amenities", amenitiesRouter);
 
+// Debug route for Sentry
+app.get('/debug-sentry', function mainHandler(req, res) {
+  throw new Error('My first Sentry error!');
+});
+
 // Login
 app.use("/login", loginRouter);
 
@@ -56,6 +61,7 @@ app.use(Sentry.Handlers.errorHandler());
 
 // Error handling
 app.use(errorHandler);
+
 
 app.listen(4000, () => {
   console.log("Server is listening on port 4000");

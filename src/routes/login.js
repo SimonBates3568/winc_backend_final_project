@@ -3,6 +3,8 @@ import userData from "../data/users.json" with { type: "json" };
 import jwt from "jsonwebtoken";
 
 const router = Router();
+//Login post /login => Returns a token upon a successful user login
+// TODO: Add Sentry monitoring to this route if needed
 
 router.post("/", (req, res) => {
   const secretKey = process.env.AUTH_SECRET_KEY || "my-secret-key";

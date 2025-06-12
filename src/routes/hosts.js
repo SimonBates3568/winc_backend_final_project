@@ -8,7 +8,8 @@ import authMiddleware from "../middleware/errorHandler.js";
 
 const router = Router();
 
-//GET /hosts => returns all hosts
+// Host => GET => /hosts => Returns all hosts and their information, except password
+// TODO: Add Sentry monitoring to this route if needed
 router.get("/", async (req, res) => {
     try {
         const hosts = await getHosts();
@@ -18,7 +19,8 @@ router.get("/", async (req, res) => {
     }
 });
 
-// POST /hosts => create a new host(JWT TOKEN AUTHENTICATION)
+// Host => POST => /hosts => Creates a new host (JWT TOKEN AUTHENTICATION)
+// TODO: Add Sentry monitoring to this route if needed
 router.post("/",  authMiddleware, async (req, res) => {
     try {
         console.log("REQ BODY:", req.body); 
@@ -32,7 +34,8 @@ router.post("/",  authMiddleware, async (req, res) => {
     }
 });
 
-// GET /hosts/:id => get host by id
+// Host => GET /hosts/:id => returns a single host by ID
+// TODO: Add Sentry monitoring to this route if needed
 router.get("/:id", async (req, res) => {
     try {
         const { id } = req.params;
@@ -46,7 +49,8 @@ router.get("/:id", async (req, res) => {
     }
 });
 
-// PUT /hosts/:id => update host by id (JWT TOKEN AUTHENTICATION)
+// Host => PUT => /hosts/:id => Updates a host by ID (JWT TOKEN AUTHENTICATION)
+// TODO: Add Sentry monitoring to this route if needed
 router.put("/:id",  authMiddleware, async (req, res) => {
     try {
         const { id } = req.params;
@@ -65,7 +69,8 @@ router.put("/:id",  authMiddleware, async (req, res) => {
     }
 });
 
-// DELETE /hosts/:id => delete host by id (JWT TOKEN AUTHENTICATION)
+// Host => DELETE => /hosts/:id => Deletes a host by ID (JWT TOKEN AUTHENTICATION)
+// TODO: Add Sentry monitoring to this route if needed
 router.delete("/:id",  authMiddleware, async (req, res) => {
     try {
   
