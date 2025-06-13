@@ -10,19 +10,21 @@ import * as Sentry from "@sentry/node";
 const router = Router();
 
 // Booking => GET => /bookings => returns all bookings (parameters: userId (optional))
-router.get("/", async (req, res) => {
+// Sentry monitoring added to this route
+router.get("/", async (req, res, next) => {
   try {
     const { userId } = req.query;
     const bookings = await getBookings({ userId });
     res.status(200).json(bookings);
   } catch (error) {
     Sentry.captureException(error);
-    res.status(500).json({ error: error.message || "Failed to retrieve bookings" });
+     res.status(500).json({ error: error.message });
+    next(error);
   }
 });
 // Booking => POST => /bookings => creates a new booking(JWT TOKEN AUTHENTICATION)
-// TODO: Add Sentry monitoring to this route if needed
-router.post("/", authMiddleware, async (req, res) => {
+// Sentry monitoring added to this route
+router.post("/", authMiddleware, async (req, res, next) => {
   try {
     const { 
       userId,
@@ -31,42 +33,48 @@ router.post("/", authMiddleware, async (req, res) => {
       checkoutDate,
       numberOfGuests,
       totalPrice,
-      bookingStatus } = req.body;
-    const newBooking = await createBooking(userId, propertyId, checkinDate, checkoutDate, numberOfGuests, totalPrice, bookingStatus);
+      bookingStatus 
+    } = req.body;
+    const newBooking = await createBooking(
+      userId,
+      propertyId,
+      checkinDate,
+      checkoutDate,
+      numberOfGuests,
+      totalPrice,
+      bookingStatus
+    );
     res.status(201).json(newBooking);
   } catch (error) {
     Sentry.captureException(error);
-    if (error.name === "UnauthorizedError") {
-      res.status(401).json({ error: "Unauthorized" });
-    } else if (error.status === 500) {
-      res.status(500).json({ error: "Internal server error" });
-    } else {
-      res.status(400).json({ error: error.message });
-    }
+    res.status(500).json({ error: error.message });
+    next(error);
   }
 });
 
 // Booking => GET => /bookings/:id => returns a single booking by ID
-// TODO: Add Sentry monitoring to this route if needed
+// Sentry monitoring added to this route
 router.get("/:id", async (req, res, next) => {
   try {
     const { id } = req.params;
-    const booking = await getBookingById(id);
+    const booking = await gokingById(id);
     if (!booking) {
       const error = new Error("Booking not found");
       error.status = 404;
+      Sentry.captureException(error);
       throw error;
     }
     res.status(200).json(booking);
   } catch (error) {
     Sentry.captureException(error);
+    res.status(500).json({ error: error.message });
     next(error);
   }
 });
 
 // Booking => PUT => /bookings/:id => updates a booking by ID (JWT TOKEN AUTHENTICATION)
-// TODO: Add Sentry monitoring to this route if needed
-router.put("/:id", authMiddleware, async (req, res) => {
+// Sentry monitoring added to this route
+router.put("/:id", authMiddleware, async (req, res, next) => {
   try {
     const { id } = req.params;
     const { 
@@ -76,46 +84,49 @@ router.put("/:id", authMiddleware, async (req, res) => {
       checkoutDate,
       numberOfGuests,
       totalPrice,
-      bookingStatus } = req.body;
-    const updatedBookingById = await updateBookingById(id, { userId,
+      bookingStatus 
+    } = req.body;
+    const updatedBooking = await updateBookingById(id, { 
+      userId,
       propertyId,
       checkinDate,
       checkoutDate,
       numberOfGuests,
       totalPrice,
-      bookingStatus });
-    if (!updatedBookingById) {
-      return res.status(404).json({ error: "Booking not found" });
+      bookingStatus 
+    });
+    if (!updatedBooking) {
+      const error = new Error("Booking not found");
+      error.status = 404;
+      Sentry.captureException(error);
+      throw error;
     }
-    res.status(200).json(updatedBookingById);
+    res.status(200).json(updatedBooking);
   } catch (error) {
     Sentry.captureException(error);
-    if (error.name === "UnauthorizedError") {
-      res.status(401).json({ error: "Unauthorized" });
-    } else {
-      res.status(400).json({ error: error.message });
-    }
+    res.status(500).json({ error: error.message });
+    next(error);
   }
 });
 
-// Booking => DELETE => /bookings/:id => deletes a booking by ID (JWT TOKEN AUTHENTICATION)
-// TODO: Add Sentry monitoring to this route if needed
-router.delete("/:id", authMiddleware, async (req, res) => {
+//  Booking => DELETE => /bookings/:id => deletes a booking by ID (JWT TOKEN AUTHENTICATION)
+// Sentry monitoring added to this route
+router.delete("/:id", authMiddleware, async (req, res, next) => {
   try {
     const { id } = req.params;
     const booking = await deleteBookingById(id);
     if (!booking) {
-      return res.status(404).json({ error: "Booking not found" });
+      const error = new Error("Booking not found");
+      error.status = 404;
+      throw error;
     }
     res.status(200).json({ message: "Booking deleted successfully", booking });
   } catch (error) {
     Sentry.captureException(error);
-    if (error.name === "UnauthorizedError") {
-      res.status(401).json({ error: "Unauthorized" });
-    } else {
-      res.status(400).json({ error: error.message });
-    }
+    res.status(500).json({ error: error.message });
+    next(error);
   }
 });
+
 
 export default router;

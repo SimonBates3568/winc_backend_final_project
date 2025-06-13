@@ -9,7 +9,7 @@ import * as Sentry from "@sentry/node";
 const router = Router();
 
 // Amenities => GET => /amenities => Returns all amenities
-// TODO: Add Sentry monitoring to this route if needed
+// Sentry monitoring added to this route
 router.get("/", async (_, res) => {
   try {
     const amenities = await getAmenities();
@@ -21,11 +21,11 @@ router.get("/", async (_, res) => {
 });
 
 // Amenities => POST => /amenities => Creates a new amenity (JWT TOKEN AUTHENTICATION)
-// TODO: Add Sentry monitoring to this route if needed
+// Sentry monitoring added to this route
 router.post("/", authMiddleware, async (req, res) => {
   try {
     const { name } = req.body;
-    const newAmenity = await createAmenity(name);
+    const newAmenity = await createnity(name);
     res.status(201).json(newAmenity);
   } catch (error) {
     Sentry.captureException(error);
@@ -38,7 +38,7 @@ router.post("/", authMiddleware, async (req, res) => {
 });
 
 // GET /amenities/:id => returns a single amenity by ID
-// TODO: Add Sentry monitoring to this route if needed
+// Sentry monitoring added to this route
 router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -54,7 +54,7 @@ router.get("/:id", async (req, res) => {
 });
 
 // PUT /amenities/:id => updates an amenity by ID (JWT TOKEN AUTHENTICATION)
-// TODO: Add Sentry monitoring to this route if needed
+// Sentry monitoring added to this route
 router.put("/:id", authMiddleware, async (req, res) => {
   try {
     const { id } = req.params;
@@ -75,7 +75,7 @@ router.put("/:id", authMiddleware, async (req, res) => {
 });
 
 // Amenities => DELETE => /amenities/:id => Deletes an amenity by ID (JWT TOKEN AUTHENTICATION)
-// TODO: Add Sentry monitoring to this route if needed
+// Sentry monitoring added to this route
 router.delete("/:id", authMiddleware, async (req, res) => {
   try {
     const { id } = req.params;

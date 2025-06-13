@@ -5,41 +5,59 @@ import getPropertyById from "../services/properties/getPropertyById.js";
 import updatePropertyById from "../services/properties/updatePropertyById.js";
 import deletePropertyById from "../services/properties/deletePropertyById.js";
 import authMiddleware from "../middleware/errorHandler.js";
+import * as Sentry from "@sentry/node";
 
 
 const router = Router();
 // Properties => GET => /properties => Returns all properties (query parameters: location, pricePerNight, amenities)
-// TODO: Add Sentry monitoring to this route if needed
-router.get("/", async (req, res) => {
+// sentry added
+router.get("/", async (req, res, next) => {
   try {
-    const { location, pricePerNight, amenities } = req.query;//query parameters
+    const { location, pricePerNight, amenities } = req.query; // query parameters
     const properties = await getProperties({ location, pricePerNight, amenities });
     res.status(200).json(properties);
   } catch (error) {
-    console.error("Error fetching properties:", error);
-    res.status(500).json({ error: "Internal Server Error" });
+    Sentry.captureException(error);
+    res.status(500).json({ error: error.message || "Internal Server Error" });
+    next(error); // Pass the error to the next middleware for Sentry
   }
 });
 
+
+
 // Properties => POST => /properties => Creates a new property (JWT TOKEN AUTHENTICATION)
-// TODO: Add Sentry monitoring to this route if needed
-router.post("/", authMiddleware,async (req, res) => {
+// sentry added
+router.post("/", authMiddleware, async (req, res, next) => {
   try {
     const { hostId, title, description, location, pricePerNight, bedroomCount, bathRoomCount, maxGuestCount, rating, host } = req.body;
-    const newProperty = await createProperty(hostId, title, description, location, pricePerNight, bedroomCount, bathRoomCount, maxGuestCount, rating, host);
+    const newProperty = await createroperty(
+      hostId,
+      title,
+      description,
+      location,
+      pricePerNight,
+      bedroomCount,
+      bathRoomCount,
+      maxGuestCount,
+      rating,
+      host
+    );
     res.status(201).json(newProperty);
   } catch (error) {
+    Sentry.captureException(error);
+
     if (error.name === "UnauthorizedError") {
       res.status(401).json({ error: "Unauthorized" });
     } else {
-      res.status(400).json({ error: error.message });
+      res.status(500).json({ error: error.message || "Internal Server Error" });
     }
+    next(error); // Pass the error to the next middleware for Sentry
   }
 });
 
 // Properties => GET => /properties/:id => Returns a single property by ID
-// TODO: Add Sentry monitoring to this route if needed
-router.get("/:id", async (req, res) => {
+// sentry added
+router.get("/:id", async (req, res, next) => {
   try {
     const { id } = req.params;
     const property = await getPropertyById(id);
@@ -48,13 +66,15 @@ router.get("/:id", async (req, res) => {
     }
     res.status(200).json(property);
   } catch (error) {
-    res.status(500).json({ error: "Failed to retrieve property" });
+    Sentry.captureException(error);
+    res.status(500).json({ error: error.message || "Failed to retrieve property" });
+    next(error); // Pass the error to the next middleware for Sentry
   }
 });
 
 // Properties => PUT => /properties/:id => Updates a property by ID (JWT TOKEN AUTHENTICATION)
-// TODO: Add Sentry monitoring to this route if needed
-router.put("/:id", authMiddleware, async (req, res) => {
+// sentry added
+router.put("/:id", authMiddleware, async (req, res, next) => {
   try {
     const { id } = req.params;
     const { 
@@ -84,16 +104,18 @@ router.put("/:id", authMiddleware, async (req, res) => {
     }
     res.status(200).json(updatedProperty);
   } catch (error) {
+    Sentry.captureException(error);
     if (error.name === "UnauthorizedError") {
       res.status(401).json({ error: "Unauthorized" });
     } else {
-      res.status(400).json({ error: error.message });
+      res.status(500).json({ error: error.message || "Internal Server Error" });
     }
+    next(error); // Pass the error to the next middleware for Sentry
   }
 });
 // Properties => DELETE => /properties/:id => Deletes a property by ID (JWT TOKEN AUTHENTICATION)
-// TODO: Add Sentry monitoring to this route if needed
-router.delete("/:id", authMiddleware, async (req, res) => {
+// sentry added
+router.delete("/:id", authMiddleware, async (req, res, next) => {
   try {
     const { id } = req.params;
     const property = await deletePropertyById(id);
@@ -102,11 +124,13 @@ router.delete("/:id", authMiddleware, async (req, res) => {
     }
     res.status(200).json({ message: "Property deleted successfully", property });
   } catch (error) {
+    Sentry.captureException(error);
     if (error.name === "UnauthorizedError") {
       res.status(401).json({ error: "Unauthorized" });
     } else {
-      res.status(400).json({ error: error.message });
+      res.status(500).json({ error: error.message || "Internal Server Error" });
     }
+    next(error); // Pass the error to the next middleware for Sentry
   }
 });
 
