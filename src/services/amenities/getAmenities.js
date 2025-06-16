@@ -6,6 +6,7 @@ const getAmenities = async () => {
 
     const amenities = await prisma.amenity.findMany({
         select: {
+            id: true,
             name: true, 
         }
     });

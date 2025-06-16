@@ -2255,7 +2255,7 @@
         "type": "text/javascript",
         "exec": [
           "pm.sendRequest({",
-          "    url: 'http://0.0.0.0:3000/login',",
+          "    url: 'http://0.0.0.0:4000/login',",
           "    method: 'POST',",
           "    header: {",
           "        'Content-Type': 'application/json'",
@@ -2293,7 +2293,7 @@
     {
       "id": "3ace598b-c5ef-4a00-bc7c-1617bb431b91",
       "key": "baseUrl",
-      "value": "http://localhost:3000",
+      "value": "http://localhost:4000",
       "type": "string"
     }
   ]

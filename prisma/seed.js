@@ -37,6 +37,7 @@ for (const user of users) {
     });
   }
   for (const property of properties) {
+     console.log("Seeding property:", property); 
     await prisma.property.upsert({
         where: { id: property.id },
         update: {},

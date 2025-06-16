@@ -57,7 +57,7 @@ router.post("/", authMiddleware, async (req, res, next) => {
 router.get("/:id", async (req, res, next) => {
   try {
     const { id } = req.params;
-    const booking = await gokingById(id);
+    const booking = await getBookingById(id);
     if (!booking) {
       const error = new Error("Booking not found");
       error.status = 404;
@@ -78,8 +78,7 @@ router.put("/:id", authMiddleware, async (req, res, next) => {
   try {
     const { id } = req.params;
     const { 
-      userId,
-      propertyId,
+     
       checkinDate,
       checkoutDate,
       numberOfGuests,
@@ -87,8 +86,7 @@ router.put("/:id", authMiddleware, async (req, res, next) => {
       bookingStatus 
     } = req.body;
     const updatedBooking = await updateBookingById(id, { 
-      userId,
-      propertyId,
+    
       checkinDate,
       checkoutDate,
       numberOfGuests,

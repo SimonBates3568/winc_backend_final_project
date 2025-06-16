@@ -23,6 +23,10 @@ const updatePropertyById = async (id, { title, description, location, pricePerNi
         };
     } catch (error) {
         console.error("Error updating property:", error);
+        if (error.code === 'P2025') {
+            // Record not found
+            return null;
+        }
         throw new Error(`Could not update property with id ${id}`);
     }
 };

@@ -3,7 +3,7 @@ const prisma = new PrismaClient();
 
 const updateBookingById = async (
     id,
-    { checkinDate, checkoutDate, numberOfGuests, totalPrice, bookingStatus, userId, propertyId }
+    { checkinDate, checkoutDate, numberOfGuests, totalPrice, bookingStatus }
 ) => {
     try {
         const booking = await prisma.booking.update({
@@ -13,9 +13,7 @@ const updateBookingById = async (
                 checkoutDate,
                 numberOfGuests,
                 totalPrice,
-                bookingStatus,
-                user: { connect: { id: userId } },
-                property: { connect: { id: propertyId } },
+                bookingStatus
             },
         });
         return {

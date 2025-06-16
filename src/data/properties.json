@@ -59,6 +59,30 @@
       "maxGuestCount": 6,
       "hostId": "b5678901-23ef-0123-4567-89abcdef0123",
       "rating": 4
+    },
+    {
+      "id": "25c5cf04-aeaa-4096-9201-bbd2372ce9e3",
+      "title": "Test Property 1",
+      "description": "Seeded for test",
+      "location": "Test City",
+      "pricePerNight": 100,
+      "bedroomCount": 1,
+      "bathRoomCount": 1,
+      "maxGuestCount": 2,
+      "hostId": "e2345678-90bc-def0-0123-456789abcdef",
+      "rating": 5
+    },
+    {
+      "id": "35c5cf04-aeaa-4096-9201-bbd2372ce9e4",
+      "title": "New Property",
+      "description": "Description for the new property.",
+      "location": "New Location",
+      "pricePerNight": 200,
+      "bedroomCount": 2,
+      "bathRoomCount": 2,
+      "maxGuestCount": 4,
+      "hostId": "f1234567-89ab-cdef-0123-456789abcdef",
+      "rating": 5
     }
   ]
 }

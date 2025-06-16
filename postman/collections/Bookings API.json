@@ -553,7 +553,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"username\": \"Alex\",\n  \"password\": \"password123\",\n  \"name\": \"John Doe\",\n  \"email\": \"johndoe@example.com\",\n  \"phoneNumber\": \"123-456-7890\",\n  \"profilePicture\": \"https://global-uploads.webflow.com/5eecfecbe625d195e35b89f2/624bfb093da7d92733c001c0_Ignacio%20Villafruela%20Rodr%C3%ADguez.jpg\"\n}",
+              "raw": "{\n  \"username\": \"Alex\",\n  \"password\": \"password123\",\n  \"name\": \"John Doe\",\n  \"email\": \"johndoe@example.com\",\n  \"phoneNumber\": \"123-456-7890\",\n  \"pictureUrl\": \"https://global-uploads.webflow.com/5eecfecbe625d195e35b89f2/624bfb093da7d92733c001c0_Ignacio%20Villafruela%20Rodr%C3%ADguez.jpg\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -1156,7 +1156,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"username\": \"newhosty \",\n  \"password\": \"password123\",\n  \"name\": \"John Doe\",\n  \"email\": \"johndoe@email.com\",\n  \"phoneNumber\": \"+11234567890\",\n  \"profilePicture\": \"https://example.com/images/johndoe.jpg\",\n  \"aboutMe\": \"I'm a passionate traveler who loves to share my home with fellow explorers. Welcome!\"\n}",
+              "raw": "{\n  \"username\": \"newhosty \",\n  \"password\": \"password123\",\n  \"name\": \"John Doe\",\n  \"email\": \"johndoe@email.com\",\n  \"phoneNumber\": \"+11234567890\",\n  \"pictureUrl\": \"https://example.com/images/johndoe.jpg\",\n  \"aboutMe\": \"I'm a passionate traveler who loves to share my home with fellow explorers. Welcome!\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -1266,7 +1266,7 @@
                   "variable": [
                     {
                       "key": "propertyId",
-                      "value": "h0123456-78f0-1234-5678-9abcdef01234",
+                      "value": "",
                       "description": "(Required) "
                     }
                   ]
@@ -2397,7 +2397,7 @@
                 }
               ],
               "cookie": [],
-              "body": "[\n  {\n    \"id\": \"l4567890-12gh-ijkl-1234-56789abcdef0\",\n    \"name\": \"Wifi\"\n  },\n  {\n    \"id\": \"l4567890-12gh-ijkl-1234-56789abcdef0\",\n    \"name\": \"Wifi\"\n  }\n]"
+              "body": "[\n  {\n    \"id\": \"l4567890-12gh-ijkl-1234-56789abcdef0\",\n    \"name\": \"cunt\"\n  },\n  {\n    \"id\": \"l4567890-12gh-ijkl-1234-56789abcdef0\",\n    \"name\": \"cunt\"\n  }\n]"
             }
           ]
         },
@@ -3942,7 +3942,7 @@
         "type": "text/javascript",
         "exec": [
           "pm.sendRequest({",
-          "    url: 'http://0.0.0.0:3000/login',",
+          "    url: 'http://0.0.0.0:4000/login',",
           "    method: 'POST',",
           "    header: {",
           "        'Content-Type': 'application/json'",
@@ -3980,7 +3980,7 @@
     {
       "id": "3ace598b-c5ef-4a00-bc7c-1617bb431b91",
       "key": "baseUrl",
-      "value": "http://localhost:3000",
+      "value": "http://localhost:4000",
       "type": "string"
     }
   ]

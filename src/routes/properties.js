@@ -30,7 +30,7 @@ router.get("/", async (req, res, next) => {
 router.post("/", authMiddleware, async (req, res, next) => {
   try {
     const { hostId, title, description, location, pricePerNight, bedroomCount, bathRoomCount, maxGuestCount, rating, host } = req.body;
-    const newProperty = await createroperty(
+    const newProperty = await createProperty(
       hostId,
       title,
       description,

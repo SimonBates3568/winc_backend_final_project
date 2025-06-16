@@ -25,7 +25,7 @@ router.get("/", async (_, res) => {
 router.post("/", authMiddleware, async (req, res) => {
   try {
     const { name } = req.body;
-    const newAmenity = await createnity(name);
+    const newAmenity = await createAmenity(name);
     res.status(201).json(newAmenity);
   } catch (error) {
     Sentry.captureException(error);

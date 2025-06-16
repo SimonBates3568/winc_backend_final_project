@@ -60,8 +60,8 @@ router.get("/:id", async (req, res, next) => {
 router.put("/:id", authMiddleware, async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { userId, propertyId, rating, comment } = req.body;
-    const updatedReview = await updateReviewById(id, { userId, propertyId, rating, comment });
+    const { rating, comment } = req.body;
+    const updatedReview = await updateReviewById(id, { rating, comment });
     if (!updatedReview) {
       return res.status(404).json({ error: "Review not found" });
     }
@@ -73,6 +73,7 @@ router.put("/:id", authMiddleware, async (req, res, next) => {
     } else {
       return res.status(500).json({ error: error.message || "Internal Server Error" });
     }
+    next(error); // Pass the error to the next middleware for Sentry
   }
 });
 

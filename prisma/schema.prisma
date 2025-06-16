@@ -68,7 +68,7 @@ model Booking {
   bookingStatus  String
 
   user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  property Property @relation(fields: [propertyId], references: [id])
+  property Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
 }
 
 model Review {
