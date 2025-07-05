@@ -4,7 +4,7 @@ import createBooking from "../services/bookings/createBooking.js";
 import getBookingById from "../services/bookings/getBookingById.js";
 import updateBookingById from "../services/bookings/updateBookingById.js";
 import deleteBookingById from "../services/bookings/deleteBookingById.js";
-import authMiddleware from "../middleware/errorHandler.js";
+import authMiddleware from "../middleware/authMiddleware.js";
 import * as Sentry from "@sentry/node";
 
 const router = Router();

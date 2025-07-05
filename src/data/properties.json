@@ -83,6 +83,18 @@
       "maxGuestCount": 4,
       "hostId": "f1234567-89ab-cdef-0123-456789abcdef",
       "rating": 5
+    },
+    {
+      "id": "a9876543-21dc-4321-ba98-fedcba098765",
+      "title": "Updated Property",
+      "description": "This property has been updated with new details.",
+      "location": "Updated Location",
+      "pricePerNight": 150,
+      "bedroomCount": 3,
+      "bathRoomCount": 2,
+      "maxGuestCount": 6,
+      "hostId": "f1234567-89ab-cdef-0123-456789abcdef",
+      "rating": 4.5
     }
   ]
 }

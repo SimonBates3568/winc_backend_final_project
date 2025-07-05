@@ -1,0 +1,13 @@
+You have not completely passed the assignment.
+When running 'npm test' some tests are failing.
+
+When logging in, the data is retrieved from a JSON file instead of the Prisma database. As a result, it is not possible to log in with a newly created user.
+
+Currently when running the negative tests your application will crash. The negative tests are designed to provide incorrect or missing data, something an user might also do by accident. When this happens, you want your application to keep running and show an error message indicating that the request is invalid with a 400 Bad Request response.
+
+The data JSON files and tests in the Booking API boilerplate template have recently been updated. The new tests are less strict and should make it easier to resolve some of the issues: https://github.com/WincAcademy/bed-final-project-boilerplate/
+I recommend using the updated data JSON files and the test files in the Postman folder from this template.
+
+In your GitHub repository, the code is present both in the root directory and in a sub-folder. I’ve reviewed the version located in the root directory (main folder).
+
+If you require any assistance we are available through the #question_ channels in the Slack campus. Replies to this message cannot be seen by mentors.

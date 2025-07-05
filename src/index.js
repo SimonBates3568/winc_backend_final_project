@@ -9,7 +9,6 @@ import hostsRouter from "./routes/hosts.js";
 import amenitiesRouter from "./routes/amenities.js";
 import loginRouter from "./routes/login.js";
 import log from "./middleware/logMiddleware.js";
-import errorHandler from "./middleware/errorHandler.js";
 
 
 const app = express();
@@ -39,7 +38,10 @@ app.use(Sentry.Handlers.tracingHandler());
 app.use(express.json());
 app.use(log);
 
-//Resource routes
+// Login (public route)
+app.use("/login", loginRouter);
+
+// Resource routes
 app.use("/users", usersRouter);
 app.use("/bookings", bookingsRouter);
 app.use("/properties", propertiesRouter);
@@ -52,16 +54,14 @@ app.get('/debug-sentry', function mainHandler(req, res) {
   throw new Error('My first Sentry error!');
 });
 
-// Login
-app.use("/login", loginRouter);
-
 // Trace errors
-// The error handler must be registered before any other error middleware and after all controllers
 app.use(Sentry.Handlers.errorHandler());
 
-// Error handling
-app.use(errorHandler);
-
+// Simple error handling (replace the auth middleware)
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ message: 'Something went wrong!' });
+});
 
 app.listen(4000, () => {
   console.log("Server is listening on port 4000");

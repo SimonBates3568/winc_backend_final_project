@@ -20,7 +20,12 @@ const updateHostById = async (id, updateData) => {
         };
     } catch (error) {
         console.error("Error updating host:", error);
-        throw new Error(`Could not update host with id ${id}`);
+        // Don't wrap Prisma errors - let them bubble up with their original error codes
+        if (error.code === 'P2025') {
+            // Record not found
+            throw error;
+        }
+        throw error; // Let the original error bubble up
     }
 };
 

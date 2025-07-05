@@ -4,7 +4,7 @@ import createReview from "../services/reviews/createReview.js";
 import getReviewById from "../services/reviews/getReviewById.js";
 import updateReviewById from "../services/reviews/updateReviewById.js";
 import deleteReviewById from "../services/reviews/deleteReviewById.js";
-import authMiddleware from "../middleware/errorHandler.js";
+import authMiddleware from "../middleware/authMiddleware.js";
 import * as Sentry from "@sentry/node";
 
 const router = Router();

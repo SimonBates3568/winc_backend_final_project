@@ -4,7 +4,7 @@ import createAmenity from "../services/amenities/createAmenity.js";
 import getAmenityById from "../services/amenities/getAmenityById.js";
 import updateAmenityById from "../services/amenities/updateAmenityById.js";
 import deleteAmenityById from "../services/amenities/deleteAmenityById.js";
-import authMiddleware from "../middleware/errorHandler.js";
+import authMiddleware from "../middleware/authMiddleware.js";
 import * as Sentry from "@sentry/node";
 const router = Router();
 

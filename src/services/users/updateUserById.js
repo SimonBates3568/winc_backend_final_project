@@ -20,6 +20,13 @@ const updateUserById = async (id, updatedUserById) => {
         };
     } catch (error) {
         console.error("Error updating user:", error);
+        
+        // Handle Prisma "Record to update not found" error
+        if (error.code === 'P2025') {
+            return null; // Return null instead of throwing error
+        }
+        
+        // For other errors, still throw
         throw new Error(`Could not update user with id ${id}`);
     }
 };

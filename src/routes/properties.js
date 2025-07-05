@@ -4,7 +4,7 @@ import createProperty from "../services/properties/createProperty.js";
 import getPropertyById from "../services/properties/getPropertyById.js";
 import updatePropertyById from "../services/properties/updatePropertyById.js";
 import deletePropertyById from "../services/properties/deletePropertyById.js";
-import authMiddleware from "../middleware/errorHandler.js";
+import authMiddleware from "../middleware/authMiddleware.js";
 import * as Sentry from "@sentry/node";
 
 
@@ -22,8 +22,6 @@ router.get("/", async (req, res, next) => {
     next(error); // Pass the error to the next middleware for Sentry
   }
 });
-
-
 
 // Properties => POST => /properties => Creates a new property (JWT TOKEN AUTHENTICATION)
 // sentry added
