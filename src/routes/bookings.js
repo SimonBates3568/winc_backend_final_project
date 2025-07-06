@@ -35,6 +35,34 @@ router.post("/", authMiddleware, async (req, res, next) => {
       totalPrice,
       bookingStatus 
     } = req.body;
+    
+    // Input validation
+    if (!userId || !propertyId || !checkinDate || !checkoutDate || !numberOfGuests || !totalPrice) {
+      return res.status(400).json({ 
+        error: "Missing required fields: userId, propertyId, checkinDate, checkoutDate, numberOfGuests, totalPrice" 
+      });
+    }
+    
+    // Validate date format and logic
+    const checkin = new Date(checkinDate);
+    const checkout = new Date(checkoutDate);
+    
+    if (isNaN(checkin.getTime()) || isNaN(checkout.getTime())) {
+      return res.status(400).json({ error: "Invalid date format" });
+    }
+    
+    if (checkin >= checkout) {
+      return res.status(400).json({ error: "Check-out date must be after check-in date" });
+    }
+    
+    if (numberOfGuests < 1) {
+      return res.status(400).json({ error: "Number of guests must be at least 1" });
+    }
+    
+    if (totalPrice < 0) {
+      return res.status(400).json({ error: "Total price must be positive" });
+    }
+
     const newBooking = await createBooking(
       userId,
       propertyId,
@@ -47,6 +75,14 @@ router.post("/", authMiddleware, async (req, res, next) => {
     res.status(201).json(newBooking);
   } catch (error) {
     Sentry.captureException(error);
+    
+    // Handle validation and constraint errors as 400
+    if (error.message.includes("Invalid userId or propertyId") || 
+        error.message.includes("Booking already exists") ||
+        error.message.includes("Referenced user or property not found")) {
+      return res.status(400).json({ error: error.message });
+    }
+    
     res.status(500).json({ error: error.message });
     next(error);
   }
@@ -62,7 +98,7 @@ router.get("/:id", async (req, res, next) => {
       const error = new Error("Booking not found");
       error.status = 404;
       Sentry.captureException(error);
-      throw error;
+      return res.status(404).json({ error: error.message });
     }
     res.status(200).json(booking);
   } catch (error) {
@@ -78,7 +114,6 @@ router.put("/:id", authMiddleware, async (req, res, next) => {
   try {
     const { id } = req.params;
     const { 
-     
       checkinDate,
       checkoutDate,
       numberOfGuests,
@@ -86,7 +121,6 @@ router.put("/:id", authMiddleware, async (req, res, next) => {
       bookingStatus 
     } = req.body;
     const updatedBooking = await updateBookingById(id, { 
-    
       checkinDate,
       checkoutDate,
       numberOfGuests,
@@ -97,7 +131,7 @@ router.put("/:id", authMiddleware, async (req, res, next) => {
       const error = new Error("Booking not found");
       error.status = 404;
       Sentry.captureException(error);
-      throw error;
+      return res.status(404).json({ error: error.message });
     }
     res.status(200).json(updatedBooking);
   } catch (error) {
@@ -116,7 +150,8 @@ router.delete("/:id", authMiddleware, async (req, res, next) => {
     if (!booking) {
       const error = new Error("Booking not found");
       error.status = 404;
-      throw error;
+      Sentry.captureException(error);
+      return res.status(404).json({ error: error.message });
     }
     res.status(200).json({ message: "Booking deleted successfully", booking });
   } catch (error) {
