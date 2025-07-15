@@ -13,6 +13,15 @@ import log from "./middleware/logMiddleware.js";
 
 const app = express();
 
+// Welcome message for the root route
+app.get('/', (req, res) => {
+  res.json({
+    message: 'Welcome to the API!',
+    version: '1.0.0',
+    status: 'Server is running successfully'
+  });
+});
+
 // Sentry
 Sentry.init({
   dsn: process.env.SENTRY_DSN,
